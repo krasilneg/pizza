@@ -243,6 +243,111 @@
   overflow: hidden;
 }
 
+.options .option {
+  float: left;
+  width: 200px;
+  height: 250px;
+  background-color: #efefef;
+  box-sizing: border-box;
+  margin: 15px;
+  text-align: center;
+  position: relative;
+}
+
+.options .option .image {
+  width: 200px;
+  height: 200px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.options .option .title {
+  font-size: 12pt;
+  color: #993045;
+  margin: 5px;
+}
+
+.options .option .price {
+  position: absolute;
+  font-size: 14pt;
+  color: white;
+  background-color: red;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid white;
+  left: 120px;
+  top: 150px;
+}
+
+.options .option .price.usd:before {
+  content: '$';
+}
+
+.options .option .price.euro:before {
+  content: '\20AC';
+}
+
+.options .option .image .description {
+  display: none;
+  position: absolute;
+  background-color: #efefef;
+  z-index: 100;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 200px;
+  overflow: auto;
+}
+
+.options .option .image:hover .description {
+  display: block;
+}
+
+.options .option .buy {
+  vertical-align: middle;
+}
+
+.options .option .buy button {
+  background-color: #993045;
+  border: none;
+  color: white;
+  width: 20px;
+  height: 20px;
+  font-size: 14pt;
+  font-weight: bolder;
+  border-radius: 4px;
+  box-sizing: border-box;
+  line-height: 20px;
+  vertical-align: middle;
+}
+
+.options .option .buy button.dec:before {
+  content: '\002D';
+}
+
+.options .option .buy button.inc:before {
+  content: '\002B';
+}
+
+.options .option .buy .quantity {
+  display: inline-block;
+  background-color: white;
+  color: #993045;
+  border: solid 1px #993045;
+  padding: 5px;
+  box-sizing: border-box;
+  font-size: 12pt;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  border-radius: 4px;
+  margin-left: 10px;
+  margin-right: 10px;
+  overflow: hidden;
+}
+
 .login-form {
   position: absolute;
   width: 400px;

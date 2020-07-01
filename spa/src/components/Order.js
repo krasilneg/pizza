@@ -7,7 +7,7 @@ import Actions from '../state/actions'
 import Currency from '../state/currency'
 import Header from './Header'
 
-const Order = ({order, profile, menu, currency, delivery, clear, add, back, edit}) => {
+const Order = ({order, profile, menu, currency, delivery, clear, add, success, back, edit}) => {
   const [error, setError] = useState(false)
 
   const prodMap = {};
@@ -42,7 +42,7 @@ const Order = ({order, profile, menu, currency, delivery, clear, add, back, edit
       )
       clear()
       add(result)
-      back()
+      success()
     } catch (e) {
       setError(e.response?.data || e.message)
     }
@@ -100,6 +100,7 @@ export default connect(
     clear: () => dispatch({type: Actions.ORDER_CLEAR}),
     add: (order) => dispatch({type: Actions.HISTORY_ADD, value: order}),
     back: () => dispatch({type: Actions.MODE, value: Modes.MODE_SHOWCASE}),
+    success: () => dispatch({type: Actions.MODE, value: Modes.MODE_ORDERED}),
     edit: (nm, value) => dispatch({type: Actions.CUSTOMER_OPTION, option: nm, value})
   })
 )(Order)

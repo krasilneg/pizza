@@ -8,6 +8,7 @@ import Login from './Login'
 import Profile from './Profile'
 import History from './History'
 import Order from './Order'
+import Success from './Success'
 
 
 const App = ({mode}) => {
@@ -17,6 +18,7 @@ const App = ({mode}) => {
     case Modes.MODE_LOGIN: return <Login />
     case Modes.MODE_PROFILE: return <Profile />
     case Modes.MODE_HISTORY: return <History />
+    case Modes.MODE_ORDERED: return <Success />
     default: return <div className="loader"></div>
   }
 }

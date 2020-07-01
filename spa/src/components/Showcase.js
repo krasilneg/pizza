@@ -5,9 +5,11 @@ import Categories from '../state/categories'
 import Actions from '../state/actions'
 
 import Header from './Header'
+import Options from './Options'
 
-const ShowCase = ({pizzaPages, currency, quantities, inc, dec}) => {
+const ShowCase = ({pizzaPages, options, currency, quantities, inc, dec}) => {
   const [curPage, setCurPage] = useState(0)
+  const optprops = {options, currency, quantities, inc, dec}
   return <>
     <Header />
     <div className="showcase">
@@ -34,14 +36,16 @@ const ShowCase = ({pizzaPages, currency, quantities, inc, dec}) => {
         })}
         {(curPage < pizzaPages.length - 1) && <div className="page-nav-btn"><button className="right" onClick={() => setCurPage(curPage + 1)}></button></div>}
       </div>
+      <Options {...optprops}/>
     </div>
   </>
 }
 
 export default connect(
   (state) => {
-    const pages = [];
-    let page = [];
+    const pages = []
+    const options = []
+    let page = []
     state.menu.forEach(item => {
       if (item.category == Categories.PIZZA) {
         if (page.length == 8) {
@@ -49,6 +53,8 @@ export default connect(
           page = []
         }
         page.push(item)
+      } else {
+        options.push(item)
       }
     })
     pages.push(page)
@@ -59,6 +65,7 @@ export default connect(
     })
     return {
       pizzaPages: pages,
+      options,
       quantities: quan,
       currency: state.currency
     }
