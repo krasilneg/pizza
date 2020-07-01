@@ -1,0 +1,284 @@
+.loader {
+  background-image:url(../img/loader.gif);
+  background-repeat:no-repeat;
+  background-position: center;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.header {
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  margin: 0px;
+  box-sizing: border-box;
+  left: 0px;
+  top: 0px;
+  padding: 5px;
+  background-color: #993045;
+  clear: both;
+  color: white;
+  font-size: 16pt;
+  text-align: right;
+  z-index: 1000;
+}
+
+ body {
+   padding-top: 50px;
+ }
+
+.header div {
+  float: right;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.header a.sign-in-link {
+  display: block;
+  background-color: white;
+  color: #993045;
+  text-decoration: none;
+  float: right;
+  padding: 5px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  height: 40px;
+  line-height: 30px;
+  text-transform: lowercase;
+  margin-left: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.header a.sign-in-link:hover {
+  background-color: #fe8070;
+  color: white;
+}
+
+.header a.sign-in-link:visited {
+  color: #993045;
+}
+
+.header .cart .size {
+  padding: 5px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  height: 40px;
+  line-height: 30px;
+  text-transform: lowercase;
+  cursor: pointer;
+  border: solid 1px white;
+  color: white;
+  background-color: red;
+}
+
+.currency-selector {
+  padding: 5px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  height: 40px;
+  line-height: 30px;
+  text-transform: lowercase;
+  cursor: pointer;
+  border: solid 1px white;
+}
+
+.currency-selector .usd-currency:before {
+  content: '$';
+}
+
+.currency-selector .euro-currency:before {
+  content: '\20AC';  
+}
+
+.showcase {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.menu {
+  display: table-row;
+}
+
+.menu .page {
+  display: none;
+  clear: both;
+}
+
+.menu .page-nav-btn {
+  display: table-cell;
+  width: 50px;
+  vertical-align: middle;
+}
+
+.menu .page-nav-btn button {
+  width: 50px;
+  height: 50px;
+  font-size: 14pt;
+  color: white;
+  background-color: #993045;
+  border-radius: 25px;
+  border-style: none;
+  display: block;
+}
+
+.menu .page-nav-btn button.left:before {
+  content: '\00AB'
+}
+
+.menu .page-nav-btn button.right:before {
+  content: '\00BB'
+}
+
+.menu .page.current {
+  display: table-cell;
+}
+
+.menu .pizza {
+  float: left;
+  width: 300px;
+  height: 380px;
+  background-color: #efefef;
+  box-sizing: border-box;
+  margin: 15px;
+  text-align: center;
+  position: relative;
+}
+
+.menu .pizza .image {
+  width: 300px;
+  height: 300px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.menu .pizza .title {
+  font-size: 16pt;
+  color: #993045;
+  margin: 5px;
+}
+
+.menu .pizza .price {
+  position: absolute;
+  font-size: 18pt;
+  color: white;
+  background-color: red;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid white;
+  left: 200px;
+  top: 240px;
+}
+
+.menu .pizza .price.usd:before {
+  content: '$';
+}
+
+.menu .pizza .price.euro:before {
+  content: '\20AC';
+}
+
+.menu .pizza .image .description {
+  display: none;
+  position: absolute;
+  background-color: #efefef;
+  z-index: 100;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 300px;
+  overflow: auto;
+}
+
+.menu .pizza .image:hover .description {
+  display: block;
+}
+
+.menu .pizza .buy {
+  vertical-align: middle;
+}
+
+.menu .pizza .buy button {
+  background-color: #993045;
+  border: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  font-size: 18pt;
+  font-weight: bolder;
+  border-radius: 4px;
+  box-sizing: border-box;
+  line-height: 30px;
+  vertical-align: middle;
+}
+
+.menu .pizza .buy button.dec:before {
+  content: '\002D';
+}
+
+.menu .pizza .buy button.inc:before {
+  content: '\002B';
+}
+
+.menu .pizza .buy .quantity {
+  display: inline-block;
+  background-color: white;
+  color: #993045;
+  border: solid 1px #993045;
+  padding: 5px;
+  box-sizing: border-box;
+  font-size: 12pt;
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+  border-radius: 4px;
+  margin-left: 10px;
+  margin-right: 10px;
+  overflow: hidden;
+}
+
+.login-form {
+  position: absolute;
+  width: 400px;
+  height: 600px;
+  top: 50%;
+  left: 50%;
+  margin-top: -300px;
+  margin-left: -200px;
+}
+
+.user-menu {
+  clear: both;
+}
+
+.user-menu .uid {
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  float: none;
+}
+
+.user-menu .popup {
+  float: none;
+  display: none;
+  background-color: #993045;
+  padding: 10px;
+  border-top: solid white 1px;
+}
+
+.user-menu:hover .popup {
+  display: block;
+}
+
+.user-menu .popup a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin: 10px;
+}
