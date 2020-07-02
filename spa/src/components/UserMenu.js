@@ -5,6 +5,7 @@ import Modes from '../state/modes'
 import Actions from '../state/actions'
 
 const UserMenu = ({profile, logout, openProfile, openHistory}) => {
+  // TODO This should be done with styled components
   return <div className="user-menu">
     <div className="uid">{profile.uid}</div>
     <div className="popup">
@@ -19,7 +20,10 @@ const UserMenu = ({profile, logout, openProfile, openHistory}) => {
 export default connect(
   (state) => ({profile: state.profile}),
   (dispatch) => ({
-    logout: () => dispatch({type: Actions.PROFILE, value: null}),
+    logout: () => {
+      dispatch({type: Actions.MODE, value: Modes.MODE_SHOWCASE})
+      dispatch({type: Actions.PROFILE, value: null})
+    },
     openProfile: () => dispatch({type: Actions.MODE, value: Modes.MODE_PROFILE}),
     openHistory: () => dispatch({type: Actions.MODE, value: Modes.MODE_HISTORY})
   })

@@ -9,16 +9,20 @@ import UserMenu from './UserMenu'
 
 const Header = ({currency, profile, cartSize, startLogin, startOrder, setCurrency}) => {
   return <div className="header">
-    {profile && <UserMenu />}
-    {!profile && <a className="sign-in-link" href="#" onClick={startLogin}>Sign in</a>}
-    {(cartSize > 0) && <div className="cart" title="Make order" onClick={startOrder}><div className={`size ${currency}`}>{cartSize}</div></div>}
-    <div className="currency-selector" title="select currency for price display">
-      <div
-        className={`${currency}-currency`}
-        title={currency}
-        onClick={() => setCurrency(currency == Currency.USD ? Currency.EURO : Currency.USD)}
-      >
+    <div className="container">
+      <a href="#pizzas">Pizzas</a>
+      <a href="#options">Options</a>
+      <div className="currency-selector">
+        <div
+          className={`${currency == Currency.USD ? Currency.EURO : Currency.USD}-currency`}
+          title="select currency for price display"
+          onClick={() => setCurrency(currency == Currency.USD ? Currency.EURO : Currency.USD)}
+        >
+        </div>
       </div>
+      {(cartSize > 0) && <div className="cart" title="Make order" onClick={startOrder}><div className={`size ${currency}`}>{cartSize.toFixed(2)}</div></div>}
+      {profile && <UserMenu />}
+      {!profile && <a className="sign-in-link" href="#" onClick={startLogin}>Sign in</a>}
     </div>
   </div>
 

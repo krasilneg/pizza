@@ -7,32 +7,42 @@ import Actions from '../state/actions'
 import Currency from '../state/currency'
 import Header from './Header'
 
-const Order = ({order, profile, menu, currency, delivery, clear, add, success, back, edit}) => {
+const Order = ({order, profile, menu, delivery, email, phone, address, clear, add, success, back, edit}) => {
   const [error, setError] = useState(false)
 
   const prodMap = {};
-  let totalCost = 0;
+  let totalCost_usd = 0;
+  let totalCost_euro = 0;
   const positions = [];
 
   menu.forEach(item => {prodMap[item.id] = item})
   order.items.forEach(({id, quantity}) => {
-    const price = prodMap[id][`price_${currency}`]
-    const cost = price * quantity
-    totalCost += cost
+    const price_usd = parseFloat(prodMap[id].price_usd)
+    const price_euro = parseFloat(prodMap[id].price_euro)
+    const cost_usd = price_usd * quantity
+    const cost_euro = price_euro * quantity
+    totalCost_usd += cost_usd
+    totalCost_euro += cost_euro
     positions.push({
       id,
       name: prodMap[id].name,
       quantity,
-      price,
-      cost
+      price_usd,
+      price_euro,
+      cost_usd,
+      cost_euro
     })
   })
 
   const make = async () => {
     setError(false)
 
-    order.contacts.phone = order.contacts.phone || profile.phone;
-    order.contacts.address = order.contacts.address || profile.address;
+    order.contacts.phone = order.contacts.phone || profile?.phone;
+    order.contacts.address = order.contacts.address || profile?.address;
+
+    if (!order.contacts.phone || !order.contacts.address) {
+      return setError('Phone number or delivery address is not specified');
+    }
 
     try {
       const result = await makeOrder(
@@ -48,54 +58,98 @@ const Order = ({order, profile, menu, currency, delivery, clear, add, success, b
     }
   }
 
-  const currencySymbol = (currency == Currency.USD) ? '$' : String.fromCharCode(8364);
+  const usd = '$'
+  const euro = String.fromCharCode(8364);
 
   return <>
     <Header/>
     {error && <div className="error">{error}</div>}
-    <div className="order-contacts">
-      <div><input name="phone" value={order.contacts.phone || profile.phone} type="text" placeholder="enter your phone number" onChange={(e) => edit('phone', e.target.value)} /></div>
+    <table className="order-positions">
+      <thead>
+        <tr><th>name</th><th>quantity</th><th>price in $</th><th>price in &#8364;</th><th>cost in $</th><th>cost in &#8364;</th></tr>
+      </thead>
+      <tbody>
+    {positions.map(({id, name, quantity, price_usd, cost_usd, price_euro, cost_euro}) => 
+        <tr
+          key={`order_pos_${id}`}
+        >
+          <td className="left">{name}</td>
+          <td>{quantity}</td>
+          <td>{usd}{price_usd.toFixed(2)}</td>
+          <td>{euro}{price_euro.toFixed(2)}</td>
+          <td>{usd}{cost_usd.toFixed(2)}</td>
+          <td>{euro}{cost_euro.toFixed(2)}</td>          
+        </tr>
+    )}
+      </tbody>
+      <tfoot>
+        <tr className="sub-total">
+          <td className="left" colSpan="4">Subtotal</td>
+          <td>{usd}{totalCost_usd.toFixed(2)}</td>
+          <td>{euro}{totalCost_euro.toFixed(2)}</td>
+        </tr>
+        <tr className="delivery">
+          <td className="left" colSpan="4">Delivery</td>
+          <td>{usd}{delivery.usd.toFixed(2)}</td>
+          <td>{euro}{delivery.euro.toFixed(2)}</td>
+        </tr>
+        <tr className="total">
+          <td className="left" colSpan="4">Total</td>
+          <td>{usd}{(totalCost_usd + delivery.usd).toFixed(2)}</td>
+          <td>{euro}{(totalCost_euro + delivery.euro).toFixed(2)}</td>
+        </tr>
+      </tfoot>
+    </table>
+    <div className="order-contacts form">
+      {!profile && 
+        <div>
+          <input
+            name="phone"
+            value={email}
+            type="text"
+            placeholder="enter your email"
+            onChange={(e) => edit('email', e.target.value)}
+          />
+        </div>
+      }
+      <div>
+        <input
+          name="phone"
+          value={phone}
+          type="text"
+          placeholder="enter your phone number"
+          onChange={(e) => edit('phone', e.target.value)}
+        />
+      </div>
       <div>
         <textarea 
           name="address" 
           placeholder="enter your address" 
           onChange={(e) => edit('address', e.target.value)} 
-          value={order.contacts.address || profile.address}
+          value={address}
         >
         </textarea>
       </div>
-    </div>
-    <table className="order-positions">
-      <thead>
-        <tr><th>name</th><th>quantity</th><th>price</th><th>cost</th></tr>
-      </thead>
-      <tbody>
-    {positions.map(({id, name, quantity, price, cost}) => 
-        <tr
-          key={`order_pos_${id}`}
-        >
-          <td>{name}</td>
-          <td>{quantity}</td>
-          <td>{currencySymbol}{price}</td>
-          <td>{currencySymbol}{cost}</td>
-        </tr>
-    )}
-      </tbody>
-      <tfoot>
-        <tr className="sub-total"><td colSpan="3">Subtotal</td><td>{currencySymbol}{totalCost}</td></tr>
-        <tr className="delivery"><td colSpan="3">Delivery</td><td>{currencySymbol}{delivery[currency]}</td></tr>
-        <tr className="total"><td colSpan="3">Total</td><td>{currencySymbol}{totalCost + delivery[currency]}</td></tr>
-      </tfoot>
-    </table>
-    <div>
-      <button className="back" onClick={back}>Back</button>
+    </div>    
+    <div className="button-holder">
+      <button className="back" onClick={back}>Back to menu</button>
       <button className="make" onClick={make}>Make order</button>
     </div>
   </>
 }
 
 export default connect(
-  ({order, profile, menu, currency, delivery}) => ({order, profile, menu, currency, delivery}),
+  ({order, profile, menu, delivery}) => (
+    {
+      order,
+      profile,
+      menu,
+      delivery,
+      email: order.contacts.email || profile?.uid || '',
+      phone: order.contacts.phone || profile?.phone || '',
+      address: order.contacts.address || profile?.address || ''
+    }
+  ),
   (dispatch) => ({
     clear: () => dispatch({type: Actions.ORDER_CLEAR}),
     add: (order) => dispatch({type: Actions.HISTORY_ADD, value: order}),

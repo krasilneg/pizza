@@ -1,5 +1,5 @@
 export default {
-  PENDING: '1',
-  INWORK: '2',
-  DELIVERING: '3'
+  PENDING: 1,
+  INWORK: 2,
+  DELIVERING: 3
 }

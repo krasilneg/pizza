@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 
+import Item from './Item'
+
 import Categories from '../state/categories'
 
 export default ({options, currency, quantities, inc, dec}) => {
@@ -14,6 +16,7 @@ export default ({options, currency, quantities, inc, dec}) => {
   }
 
   return <>
+      <h3>Options</h3>
       <div className="options-filter">
         <button className={optFilter.includes(Categories.DRINK) ? 'active' : ''} onClick={() => selectOptFilter(Categories.DRINK)}>Drinks</button>
         <button className={optFilter.includes(Categories.SALAD) ? 'active' : ''} onClick={() => selectOptFilter(Categories.SALAD)}>Salads</button>
@@ -22,20 +25,9 @@ export default ({options, currency, quantities, inc, dec}) => {
       <div className="options">
         {options
           .filter(({category}) => (optFilter.length == 0) || optFilter.includes(category))
-          .map((option) => {
-            const styles = {backgroundImage: `url(${pizza.image || `/img/${option.category}.png`})`};
-            return <div key={`option-${option.id}`} className="option">
-              <div className="image" style={styles}>
-                <div className="description">{option.description}</div>
-              </div>
-              <div className="title">{option.name}</div>
-              <div className={`price ${currency}`}>{option[`price_${currency}`]}</div>
-              <div className="buy">
-                {quantities[option.id] > 0 && <button className="dec" title="Remove from cart" onClick={() => dec(option)}></button>}
-                {quantities[option.id] > 0 && <span className="quantity" title="Quantity in cart">{quantities[option.id] || 0}</span>}
-                <button className="inc" title="Add to cart" onClick={() => inc(option)}></button>
-              </div>
-            </div>        
+          .map((item) => {
+            const props = {item, className: 'option', currency, quantities, inc, dec};
+            return <Item key={`item-${item.id}`} {...props} />       
         })}
       </div>  
   </>

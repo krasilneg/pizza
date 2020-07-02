@@ -24,18 +24,28 @@ const menu = (state = [], action) => (action.type == Actions.MENU) ? action.valu
 const delivery = (state = {[Currency.USD]: 0, [Currency.EURO]: 0}, action) => (action.type == Actions.DELIVERY) ? action.value : state
 const profile = (state = {}, action) => {
   switch (action.type) {
-    case Actions.PROFILE: return action.value
+    case Actions.PROFILE: {
+      if (action.value) {
+        localStorage.setItem('profile', JSON.stringify(action.value))
+      } else {
+        localStorage.removeItem('profile')
+      }
+      return action.value
+    }
     case Actions.PROFILE_ATTR: {
+      if (!state) return state;
       const result = Object.assign({}, state, {[action.attr]: action.value})
       localStorage.setItem('profile', JSON.stringify(result))
       return result;
     }
     case Actions.HISTORY_ADD: {
+      if (!state) return state;
       const result = Object.assign({}, state, {orders: state.orders.concat([action.value])})
       localStorage.setItem('profile', JSON.stringify(result))
       return result
     }
     case Actions.HISTORY_REMOVE: {
+      if (!state) return state;
       const result = Object.assign({}, state, {orders: state.orders.filter(order => order.id != action.id)})
       localStorage.setItem('profile', JSON.stringify(result))
       return result
@@ -93,8 +103,9 @@ const order = (
     }
     case Actions.ORDER: return action.value
     case Actions.ORDER_CLEAR: {
-      localStorage.setItem('order', JSON.stringify(initialOrder))
-      return initialOrder
+      const result = Object.assign({}, state, {items: []})
+      localStorage.setItem('order', JSON.stringify(result))
+      return result
     }
     default: return state;
   }

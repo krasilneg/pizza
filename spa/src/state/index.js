@@ -39,6 +39,7 @@ const setOrder = setter(Actions.ORDER)
 
 
 export const init = async () => {
+  // TODO implement menu cache lifetime
   const showCase = await api.getShowCase()
   setMenu(showCase.menu)
   setDelivery(showCase.delivery)
@@ -47,8 +48,8 @@ export const init = async () => {
   if (profile) {
     profile = JSON.parse(profile)
     try {
+       // TODO implement token lifetime
       profile = await api.checkToken(profile.uid, profile.token)
-      localStorage.setItem('profile', JSON.stringify(profile))
       setProfile(profile)
     } catch (e) {
       localStorage.removeItem('profile')

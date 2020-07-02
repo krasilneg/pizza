@@ -14,7 +14,7 @@
     "redux": "^4.0.5",
     "react-redux": "^7.2.0",
     "@babel/runtime": "^7.10.4",
-    "@fortawesome/fontawesome-free": "^5.13.1"
+    "moment": "^2.27.0"
   },
   "devDependencies": {
     "webpack": "^4.43.0",

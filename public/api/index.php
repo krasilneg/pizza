@@ -1,5 +1,4 @@
 <?php
-ini_set('display_errors',1);
 error_reporting(E_ALL);
 
 $config = include '../../config/config.php';
@@ -37,7 +36,7 @@ use wooo\lib\middleware\GlobalTransaction;
         return $res->setStatus(400)->send('Bad request');
       }
 
-      $orders = $db->query('select * from orders where uid = :uid', ['uid' => $u->uid]);
+      $orders = $db->query('select * from orders where uid = :uid', ['uid' => $u->uid], ['status' => 'int', 'when' => 'datetime']);
       foreach ($orders as &$order) {
         $order->contacts = json_decode($order->contacts);
         $order->items = json_decode($order->items);
@@ -65,6 +64,11 @@ use wooo\lib\middleware\GlobalTransaction;
       $profile = $req->getBody();
       if (empty($profile->uid)) {
         $res->setStatus(400)->send('Bad request');
+      }
+      if (!empty($profile->phone)) {
+        if (preg_match('/^\d{11}$/', $profile->phone) !== 1) {
+          throw new Exception('Invalid phone number format');
+        }
       }
       $auth->check($profile->uid, $req, $res);
       $db->execute(
@@ -94,11 +98,11 @@ use wooo\lib\middleware\GlobalTransaction;
         $auth->check($order->uid, $req, $res);
       }
 
-      if (empty($order->uid) && empty($order->email) && empty($order->phone)) {
+      if (empty($order->uid) && empty($order->contatcs->email) && empty($order->contacts->phone)) {
         throw new Exception('No customer identity specified!');
       }
 
-      if (isset($order->email) && !filter_var($order->email, FILTER_VALIDATE_EMAIL)) {
+      if (isset($order->contacts->email) && !filter_var($order->contacts->email, FILTER_VALIDATE_EMAIL)) {
         throw new Exception('Invalid email specified!');
       }
 

@@ -22,11 +22,11 @@ const Login = ({setProfile, back}) => {
     }
   }
 
-  return <div className="login-form">
+  return <div className="form login">
     <div><input name="email" value={email} type="text" placeholder="enter e-mail" onChange={(e) => setLogin(e.target.value)} /></div>
     <div><input name="pwd" value={pwd} type="password" placeholder="enter password" onChange={(e) => setPwd(e.target.value)} /></div>
-    <div><button className="back" onClick={back}>Back</button><button onClick={submit}>Sign in</button></div>
-    <div className="hint">You'll be automatically signed up with specified password if not yet</div>
+    <div className="button-holder"><button className="back" onClick={back}>Back to menu</button><button onClick={submit}>Sign in</button></div>
+    <div className="info">You'll be automatically signed up with specified password if not yet</div>
     {error && <div className="error">{error}</div>}
   </div>
 }
