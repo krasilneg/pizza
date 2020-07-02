@@ -121,7 +121,7 @@ use wooo\lib\middleware\GlobalTransaction;
       );
       $result = new stdClass();
       $result->id = $out['rowid'];
-      $result->uid = $order->uid;
+      $result->uid = $order->uid ?? null;
       $result->when = $when;
       $result->contacts = $order->contacts;
       $result->items = $order->items;
