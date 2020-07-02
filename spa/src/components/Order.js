@@ -7,35 +7,26 @@ import Actions from '../state/actions'
 import Currency from '../state/currency'
 import Header from './Header'
 
-const Order = ({order, profile, menu, delivery, email, phone, address, clear, add, success, back, edit}) => {
+const Order = ({
+  order, profile, menu, delivery, email, phone, address,
+  set, clear, add, success, back, edit
+}) => {
   const [error, setError] = useState(false)
 
   const prodMap = {};
   let totalCost_usd = 0;
   let totalCost_euro = 0;
-  const positions = [];
 
   menu.forEach(item => {prodMap[item.id] = item})
-  order.items.forEach(({id, quantity}) => {
-    const price_usd = parseFloat(prodMap[id].price_usd)
-    const price_euro = parseFloat(prodMap[id].price_euro)
-    const cost_usd = price_usd * quantity
-    const cost_euro = price_euro * quantity
-    totalCost_usd += cost_usd
-    totalCost_euro += cost_euro
-    positions.push({
-      id,
-      name: prodMap[id].name,
-      quantity,
-      price_usd,
-      price_euro,
-      cost_usd,
-      cost_euro
-    })
-  })
 
   const make = async () => {
     setError(false)
+
+    order.items = order.items.filter(item => item.quantity > 0)
+
+    if (!order.items.length) {
+      return setError('Order is empty')
+    }    
 
     order.contacts.phone = order.contacts.phone || profile?.phone;
     order.contacts.address = order.contacts.address || profile?.address;
@@ -69,18 +60,26 @@ const Order = ({order, profile, menu, delivery, email, phone, address, clear, ad
         <tr><th>name</th><th>quantity</th><th>price in $</th><th>price in &#8364;</th><th>cost in $</th><th>cost in &#8364;</th></tr>
       </thead>
       <tbody>
-    {positions.map(({id, name, quantity, price_usd, cost_usd, price_euro, cost_euro}) => 
-        <tr
+    {order.items.map(({id, quantity}) => {
+      const product = prodMap[id];
+      const price_usd = parseFloat(prodMap[id].price_usd)
+      const price_euro = parseFloat(prodMap[id].price_euro)
+      const cost_usd = price_usd * quantity
+      const cost_euro = price_euro * quantity
+      totalCost_usd += cost_usd
+      totalCost_euro += cost_euro
+  
+      return <tr
           key={`order_pos_${id}`}
         >
-          <td className="left">{name}</td>
-          <td>{quantity}</td>
+          <td className="left">{product.name}</td>
+          <td className="editable"><input type="number" value={quantity} onChange={(e) => set(product, e.target.value) }/></td>
           <td>{usd}{price_usd.toFixed(2)}</td>
           <td>{euro}{price_euro.toFixed(2)}</td>
           <td>{usd}{cost_usd.toFixed(2)}</td>
           <td>{euro}{cost_euro.toFixed(2)}</td>          
         </tr>
-    )}
+    })}
       </tbody>
       <tfoot>
         <tr className="sub-total">
@@ -152,6 +151,7 @@ export default connect(
   ),
   (dispatch) => ({
     clear: () => dispatch({type: Actions.ORDER_CLEAR}),
+    set: (product, value) => dispatch({type: Actions.CART_SET, product, value}),
     add: (order) => dispatch({type: Actions.HISTORY_ADD, value: order}),
     back: () => dispatch({type: Actions.MODE, value: Modes.MODE_SHOWCASE}),
     success: () => dispatch({type: Actions.MODE, value: Modes.MODE_ORDERED}),

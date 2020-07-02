@@ -56,10 +56,15 @@ const profile = (state = {}, action) => {
 
 const processItems = (state, action, q) => {
   let assigned = false;
+  const delta = (action.value || 1) * q;
   const result = state.items.map((item) => {
     if (item.id == action.product.id) {
       assigned = true;
-      return Object.assign({}, item, { quantity: item.quantity + q })
+      return Object.assign(
+        {},
+        item,
+        { quantity: action.type == Actions.CART_SET ? action.value : item.quantity + delta }
+      )
     }
     return item
   })
@@ -92,6 +97,7 @@ const order = (
   action
 ) => {
   switch (action.type) {
+    case Actions.CART_SET: return setQuan(state, action)
     case Actions.CART_INC: return setQuan(state, action, 1) 
     case Actions.CART_DEC: return setQuan(state, action, -1)
     case Actions.CUSTOMER_OPTION: {

@@ -9,6 +9,7 @@ export default {
   HISTORY_ADD: 'add-history',
   HISTORY_REMOVE: 'history-remove',
   ORDER: 'order',
+  CART_SET: 'cart-set-quan',
   CART_INC: 'add-to-cart',
   CART_DEC: 'rem-from-cart',
   CUSTOMER_OPTION: 'customer-option',
