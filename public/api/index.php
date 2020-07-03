@@ -111,7 +111,7 @@ use wooo\lib\middleware\GlobalTransaction;
         throw new Exception('No customer identity specified!');
       }
 
-      if (isset($order->contacts->email) && !filter_var($order->contacts->email, FILTER_VALIDATE_EMAIL)) {
+      if (empty($order->uid) && isset($order->contacts->email) && !filter_var($order->contacts->email, FILTER_VALIDATE_EMAIL)) {
         throw new Exception('Invalid email specified!');
       }
 
