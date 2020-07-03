@@ -2,6 +2,8 @@
 error_reporting(E_ALL);
 
 $config = include '../../config/config.php';
+$config = array_merge($config, $_ENV);
+
 $di = include '../../config/di.php';
 require '../../vendor/autoload.php';
 
@@ -19,7 +21,6 @@ use wooo\lib\middleware\GlobalTransaction;
   new App(
     realpath(__DIR__ . '/../..'),
     new Config($config),
-    new Config($_ENV),
     $di
   )
 )
