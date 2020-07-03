@@ -7,19 +7,19 @@ import Currency from '../state/currency'
 
 import UserMenu from './UserMenu'
 
-const Header = ({currency, profile, cartSize, startLogin, startOrder, setCurrency}) => {
+const Header = ({mode, currency, profile, cartSize, startLogin, startOrder, setCurrency}) => {
   return <div className="header">
     <div className="container">
-      <a href="#pizzas">Pizzas</a>
-      <a href="#options">Options</a>
-      <div className="currency-selector">
+      {(mode == Modes.MODE_SHOWCASE) && <a href="#pizzas">Pizzas</a>}
+      {(mode == Modes.MODE_SHOWCASE) && <a href="#options">Options</a>}
+      {(mode == Modes.MODE_SHOWCASE) && <div className="currency-selector">
         <div
           className={`${currency == Currency.USD ? Currency.EURO : Currency.USD}-currency`}
           title="select currency for price display"
           onClick={() => setCurrency(currency == Currency.USD ? Currency.EURO : Currency.USD)}
         >
         </div>
-      </div>
+      </div>}
       {(cartSize > 0) && <div className="cart" title="Make order" onClick={startOrder}><div className={`size ${currency}`}>{cartSize.toFixed(2)}</div></div>}
       {profile && <UserMenu />}
       {!profile && <a className="sign-in-link" href="#" onClick={startLogin}>Sign in</a>}
@@ -29,14 +29,15 @@ const Header = ({currency, profile, cartSize, startLogin, startOrder, setCurrenc
 }
 
 export default connect(
-  (state) => {
+  ({mode, order, currency, profile}) => {
     let cart = 0
-    state.order.items.forEach(item => {
-      cart += item.quantity * item[`price_${state.currency}`]
+    order.items.forEach(item => {
+      cart += item.quantity * item[`price_${currency}`]
     })
     return {
-      currency: state.currency,
-      profile: state.profile,
+      mode,
+      currency,
+      profile,
       cartSize: cart
     }
   },

@@ -8,13 +8,21 @@ require '../../vendor/autoload.php';
 use pizza\Authenticator;
 use pizza\OrderStatus;
 use wooo\core\App;
+use wooo\core\Config;
 use wooo\core\DateTime;
 use wooo\core\Request;
 use wooo\core\Response;
 use wooo\lib\dbal\PDODriver;
 use wooo\lib\middleware\GlobalTransaction;
 
-(new App(realpath(__DIR__ . '/../..'), $config, $di))
+(
+  new App(
+    realpath(__DIR__ . '/../..'),
+    new Config($config),
+    new Config($_ENV),
+    $di
+  )
+)
     ->get('/api/showcase$', function (PDODriver $db) use ($config) {
       return [
         'menu' => $db->query('select * from menu'),

@@ -61,7 +61,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rollbyte/wooo.git",
-                "reference": "6562c2d06f0e78a85bbe4a8a471fc1eb2b851c5e"
+                "reference": "824da40ab2dd4ea414bcc71a006169ef46a0da5d"
             },
             "require": {
                 "php": "^7.3",
@@ -87,7 +87,7 @@
                     "wooo\\tests\\": "tests"
                 }
             },
-            "time": "2020-07-01T10:51:23+00:00"
+            "time": "2020-07-03T04:25:30+00:00"
         }
     ],
     "packages-dev": [],
