@@ -57,7 +57,14 @@ const Order = ({
     {error && <div className="error">{error}</div>}
     <table className="order-positions">
       <thead>
-        <tr><th>name</th><th>quantity</th><th>price in $</th><th>price in &#8364;</th><th>cost in $</th><th>cost in &#8364;</th></tr>
+        <tr>
+          <th>name</th>
+          <th>quantity</th>
+          <th>price in $</th>
+          <th>price in &euro;</th>
+          <th>cost in $</th>
+          <th>cost in &euro;</th>
+        </tr>
       </thead>
       <tbody>
     {order.items.map(({id, quantity}) => {
