@@ -61,9 +61,9 @@ const Order = ({
           <th>name</th>
           <th>quantity</th>
           <th>price in $</th>
-          <th>price in &euro;</th>
+          <th>price in {euro}</th>
           <th>cost in $</th>
-          <th>cost in &euro;</th>
+          <th>cost in {euro}</th>
         </tr>
       </thead>
       <tbody>
